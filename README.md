@@ -1,98 +1,51 @@
-# Simplified Binance Futures Testnet Trading Bot
+# Binance Futures Trading Bot
 
-A fast, lightweight Python CLI tool for placing MARKET and LIMIT orders on the Binance USDT-M Futures Testnet.
+A sleek, dark-themed trading bot desktop application and CLI tool to interact with the Binance USDT-M Futures Testnet. It supports offline simulation/demo mode by default if credentials are not configured.
 
-## Prerequisites
+![GUI Screenshot](screenshot.png)
 
-- Python 3.8 or higher
-- Binance Futures Testnet API Key and Secret (register at [testnet.binancefuture.com](https://testnet.binancefuture.com/))
+## Tech Stack
 
-## Installation
+- **Language**: Python 3.8+
+- **GUI Engine**: Tkinter (Standard Library)
+- **HTTP Client**: Requests (Reuses TCP/TLS connections via Session pool)
+- **Environment**: python-dotenv
 
-1. Clone or navigate to the project directory:
-   ```bash
-   cd trading_bot
-   ```
+## Steps to Run Directly
 
-2. (Optional) Create and activate a virtual environment:
-   ```bash
-   python -m venv .venv
-   # Windows:
-   .venv\Scripts\activate
-   # macOS/Linux:
-   source .venv/bin/activate
-   ```
+### 1. Install Dependencies
+Navigate into the folder and install requirements:
+```bash
+pip install -r requirements.txt
+```
 
-3. Install required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 2. Configure Credentials (Optional)
+Copy `.env.example` to `.env` and enter your API credentials:
+```bash
+# Windows
+copy .env.example .env
+# macOS/Linux
+cp .env.example .env
+```
+*Note: If credentials are left as placeholders or invalid, the bot automatically runs in **Offline Demo Mode** with simulated order responses.*
 
-## Configuration
-
-1. Copy the template `.env.example` file to `.env`:
-   ```bash
-   # Windows (cmd/PowerShell):
-   copy .env.example .env
-   # macOS/Linux:
-   cp .env.example .env
-   ```
-
-2. Open the `.env` file and replace the placeholders with your actual credentials:
-   ```env
-   BINANCE_TESTNET_API_KEY=your_testnet_api_key_here
-   BINANCE_TESTNET_API_SECRET=your_testnet_api_secret_here
-   ```
-
-## Usage
-
-You can invoke the bot using `python -m trading_bot` followed by arguments.
-
-### Launch the Graphical Interface (GUI)
-
-You can launch the dark-themed desktop GUI using:
+### 3. Run the GUI
+Launch the desktop graphical user interface directly:
 ```bash
 python -m trading_bot --gui
 ```
 
-### 1. Verify Connectivity (Ping)
-
-Check if the client can successfully communicate with the Binance Futures Testnet server:
-```bash
-python -m trading_bot --ping
-```
-
-### 2. Place a MARKET Buy Order
-
-Place a market buy order for a specific symbol (e.g., BTCUSDT):
-```bash
-python -m trading_bot --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001
-```
-
-### 3. Place a LIMIT Sell Order
-
-Place a limit sell order at a specific price:
-```bash
-python -m trading_bot --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 95000.0
-```
-
-### Command Line Options
-
-```text
-options:
-  -h, --help            show this help message and exit
-  --symbol SYMBOL       Trading pair, e.g. BTCUSDT
-  --side {BUY,SELL}     Order direction
-  --type {MARKET,LIMIT}
-                        Order type
-  --quantity QUANTITY   Order quantity
-  --price PRICE         Limit price (required when --type=LIMIT)
-  --api-key API_KEY     Override API key
-  --api-secret API_SECRET
-                        Override API secret
-  --ping                Only verify testnet connectivity.
-```
-
-## Logs
-
-A rotating file handler records detailed operational logs inside the `logs/` directory.
+### 4. Run via CLI (Alternative)
+You can also run commands directly from the command line:
+- **Ping testnet**:
+  ```bash
+  python -m trading_bot --ping
+  ```
+- **Place MARKET Order**:
+  ```bash
+  python -m trading_bot --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001
+  ```
+- **Place LIMIT Order**:
+  ```bash
+  python -m trading_bot --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 95000
+  ```
