@@ -26,7 +26,18 @@ class BinanceFuturesClient:
         self.session = requests.Session()
         self.session.trust_env = False
         self.session.headers.update({"X-MBX-APIKEY": self.api_key})
-        logger.info("BinanceFuturesClient initialised (base_url=%s)", self.base_url)
+        
+        # Detect demo/mock mode
+        placeholders = {"your_testnet_api_key_here", "your_testnet_api_secret_here", "demo", "mock"}
+        self.demo_mode = (
+            self.api_key in placeholders or
+            self.api_secret in placeholders or
+            (self.api_key is not None and self.api_key.startswith("http"))
+        )
+        if self.demo_mode:
+            logger.info("BinanceFuturesClient initialised in offline DEMO/MOCK mode.")
+        else:
+            logger.info("BinanceFuturesClient initialised (base_url=%s)", self.base_url)
 
     def _sign(self, params: Dict[str, Any]) -> str:
         query_string = "&".join(f"{k}={v}" for k, v in params.items())
@@ -54,6 +65,26 @@ class BinanceFuturesClient:
 
     def place_order(self, order: OrderRequest) -> Dict[str, Any]:
         order.validate()
+        if self.demo_mode:
+            logger.info("[DEMO MODE] Simulating order placement...")
+            time.sleep(0.05)  # Simulate small network latency
+            mock_price = str(order.price) if order.price is not None else "60000.0"
+            payload = {
+                "orderId": 987654321,
+                "symbol": order.symbol,
+                "status": "FILLED" if order.order_type == "MARKET" else "NEW",
+                "clientOrderId": "demo_client_order_id",
+                "price": mock_price,
+                "avgPrice": mock_price,
+                "origQty": str(order.quantity),
+                "executedQty": str(order.quantity),
+                "side": order.side.value,
+                "type": order.order_type.value,
+                "updateTime": int(time.time() * 1000)
+            }
+            logger.info("Order accepted (DEMO): orderId=%s status=%s", payload.get("orderId"), payload.get("status"))
+            return payload
+
         params = self._build_signed_params(order.to_dict())
         url = f"{self.base_url}{ORDER_ENDPOINT}"
         logger.info("POST %s | params=%s", url, self._safe_log_params(params))
