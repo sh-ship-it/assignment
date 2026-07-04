@@ -48,6 +48,13 @@ A fast, lightweight Python CLI tool for placing MARKET and LIMIT orders on the B
 
 You can invoke the bot using `python -m trading_bot` followed by arguments.
 
+### Launch the Graphical Interface (GUI)
+
+You can launch the dark-themed desktop GUI using:
+```bash
+python -m trading_bot --gui
+```
+
 ### 1. Verify Connectivity (Ping)
 
 Check if the client can successfully communicate with the Binance Futures Testnet server:

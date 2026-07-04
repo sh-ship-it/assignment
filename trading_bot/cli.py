@@ -20,6 +20,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--api-key", default=None, help="Override API key")
     parser.add_argument("--api-secret", default=None, help="Override API secret")
     parser.add_argument("--ping", action="store_true", help="Only verify testnet connectivity.")
+    parser.add_argument("--gui", action="store_true", help="Launch the graphical user interface.")
     return parser
 
 def build_order_request(args: argparse.Namespace) -> OrderRequest:
@@ -67,6 +68,11 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     parser = build_parser()
     args = parser.parse_args(argv)
+
+    if args.gui:
+        from .gui import main as run_gui
+        run_gui()
+        return 0
 
     if not args.ping:
         missing = []
