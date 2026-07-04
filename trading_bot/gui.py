@@ -155,7 +155,7 @@ class TradingBotGUI:
         
         ttk.Label(log_container, text="LOG CONSOLE", style="Section.TLabel").pack(anchor="w", pady=(0, 5))
         
-        self.log_text = scrolledtext.ScrolledText(log_container, bg=BG_COLOR, fg=TEXT_COLOR, insertbackground=TEXT_COLOR, relief="flat", font=("Consolas", 9.5), borderwidth=0, state="disabled")
+        self.log_text = scrolledtext.ScrolledText(log_container, bg=BG_COLOR, fg=TEXT_COLOR, insertbackground=TEXT_COLOR, relief="flat", font=("Consolas", 10), borderwidth=0, state="disabled")
         self.log_text.pack(fill="both", expand=True)
         
         # Redirect custom logs to widget
